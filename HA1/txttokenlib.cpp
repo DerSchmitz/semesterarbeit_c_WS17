@@ -26,7 +26,7 @@ void CltxtToken::ladeTXT(ifstream &txtdatei) {
     cout << "------------------------------"<< endl;
     for (counter=0, zustandsmeldung=zwischendenZeilen, anzahlAtt=0;;){
     txtdatei.get(zeichen);
-    if (txtdatei.eof()) return;
+    if (txtdatei.eof()) return; // ERGÄNZE ANDERE OBJEKTE.EOF !!!!
 
 
         switch(zeichen){

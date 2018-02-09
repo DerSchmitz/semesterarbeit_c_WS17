@@ -26,15 +26,24 @@ int main()
     // übergebe ifstreamobjekt an funktion den Parsing-Methoden
             // diese Methode gibt direkt die geparsten Daten aus
     xmltoken.ladeXML(eingabe_xml);
+
+    // Drucke XML durch eigene MEthode
+    cout << "DRUCKE XML AB" << endl;
+    xmltoken.printXMLToken(1);
+
+
+
+
+
             // diese Methode speichert die daten innerhalb der Klasse CltxtToken zwischen, sodass sie anschließend über eine Print-Anweisung ausgedruckt werden kann
-    txttoken.ladeTXT(eingabe_txt);
+   /* txttoken.ladeTXT(eingabe_txt);
 
     // Print out TXT
     for (int i=0;i<txttoken.getAnzahlAtt();i++){
     cout << "ValueID: " << txttoken.getattValueID(i) << endl;
     cout << "ValueModel: " << txttoken.getattValueModel(i) << endl;
     cout << "ValuePrice: " << txttoken.getattValuePrice(i) << endl;
-    }
+    }*/
 
     // Close ifstreamobjekts
     eingabe_xml.close();
