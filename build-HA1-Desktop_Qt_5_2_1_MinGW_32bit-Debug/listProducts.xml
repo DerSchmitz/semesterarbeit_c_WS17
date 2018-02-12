@@ -10,7 +10,7 @@
     <model gen='Late 2017'>Aperture Science Extra</model>
     <desc>Die Sonne ist von Kupfer.</desc>
     <price>624.11</price>
-  </product>  
+  </product>
   <product xml:id="123">
     <type>Smartphone</type>
     <model gen='Early 2018'>Smarty X</model>
@@ -29,7 +29,7 @@
     <desc>Lorem Ipsum.</desc>
     <price>389.99</price>
   </product>
-  
+
     <product xml:id="924">
     <type>Flatscreen</type>
     <model gen='Mid 2017'>Pro Screen</model>

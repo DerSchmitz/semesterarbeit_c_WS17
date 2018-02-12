@@ -4,37 +4,28 @@
 #include <stdlib.h>
 using namespace std;
 #include "clxmltoken.h"
-#include "cltxttoken.h"
-
+#include "print-check.h"
 
 // definiere Regeln für das Erschaffen eines neuen Objekts der Klasse ClxmlToken
 ClxmlToken::ClxmlToken()
 {
 *tokenTagname='\0'; // reset tokentagname
-xmltokenChild=NULL; // reset
-xmltokenSibling=NULL;
-tokenTaginhalt=new char[1];
+xmltokenChild=NULL; // reset child
+xmltokenSibling=NULL;// reset sibling
+tokenTaginhalt=new char[1];// reset taginhalt
 *tokenTaginhalt='\0';
 }
 
-
-
-
-
-
-
-
 int ClxmlToken::ladeXML(ifstream &xmldatei) {
 
-    cout << endl << "Hallo, Ich bin die ladeXML Methode!" << endl;
+    //cout << endl << "Hallo, Ich bin die ladeXML Methode!" << endl;
 
         char zeichen;
         char puffer[100];
         int zaehler;
-        int zeichentest =0;
         // Kind-Objekt - Hilfsobjekt?
         ClxmlToken *child;
-        // KindObjekt
+
 
         enum zustand { zwischenTags, inNamen, erwarteAttributNamen,
                         erwarteAttributWert, verarbeiteAttributWert, istEndTag, erwarteTaginhalt} ;
@@ -42,13 +33,17 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
 
        cleanToken();
 
+
         cout << endl << endl;
-        cout << "Parsing der XML Datei (listProducts.xml)" << endl;
+        cout << "Parsing of the XML-Datafile " << endl;
         cout << "------------------------------"<< endl;
 
+        // start for-loop
         for (zaehler=0, zustand=zwischenTags, anzahlAtt=0;;) {
 
             xmldatei.get(zeichen);
+
+            // return function if file has come to an end
             if (xmldatei.eof()) {
 
                 if (*tokenTagname == '\0' && tokenTaginhalt == NULL && xmltokenChild == NULL )  return fillToken(0);
@@ -57,10 +52,10 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
                // break;
             }
 
+            // start switch-case for parsing character by character
             switch(zeichen) {
 
                 case '<':
-
                 xmldatei.get(zeichen);
                 if (zeichen=='/')
                    {
@@ -70,27 +65,27 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
                             puffer[zaehler]='\0';
                             tokenTaginhalt = new char[zaehler+1];
                             strcpy(tokenTaginhalt,puffer);
-                            cout << "Taginhalt: " << tokenTaginhalt << endl;
+                            //cout << "Taginhalt: " << tokenTaginhalt << endl;
                         }
                    }
                 else {
-                  // WICHTIG - HIER SIND WIR IM START TAG!
-                    /* falls tokenTagname schon gefüllt ist ERSCHAFFE KIND-OBJEKT UND jage es erneut durch dieselbe Methode*/
+                  // IMPORTANT - HERE IS THE START TAG!
+                    /* if tokenTagname is already filled, create new child-object and run it once more through the same methode */
                     xmldatei.putback(zeichen);
-                    //cout << "*tokenTagname " << *tokenTagname << endl;
+
+                    //cout << "*tokenTagname " << *tokenTagname << endl;                    
                    if (*tokenTagname!='\0')
                       {
                       xmldatei.putback('<');
-                      //cout << "tokenTagname " << tokenTagname << " " << xmltokenChild << endl;
+
+                      //cout << "tokenTagname " << tokenTagname << " " << xmltokenChild << endl;                      
                   if (xmltokenChild==NULL)
                      {
-
-
                          xmltokenChild=new ClxmlToken; // cout << "erschaffe Kind" << endl;
                          xmltokenChild->ladeXML(xmldatei);
-                      }else{ // IF ELSE kein xmlTokenchild existiert
+                      }else{ // IF ELSE no xmlTokenchild exists
 
-                            // iteriere alle tokenSiblings durch!!!
+                            // iterate all possible tokenSiblings
                             for (child=xmltokenChild;;child=child->xmltokenSibling) { // durch iterative Bespielung des hilfsobjekts child werden objekte iteriert
 
                                 if (child->xmltokenSibling==NULL)
@@ -102,12 +97,8 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
                                 }
                             }
                       }
-
-                   // wenn wir im Start-tag sind, tokentagname gefüllt ist/nicht gefüllt ist
-                                                   // es aber noch kein TOKENCHILD gibt
-                   //xmldatei.putback(zeichen); // wird nicht gebraucht, da vorher schon behandelt? - ACTHUNG hier liegt evtl. Fehler vor!!!
-                   zustand=inNamen;
-                   //puffer[zaehler] = '\0';
+                   // if we are in start-tag and tokentagname ist either filled or not filled, but there is NO Child yet
+                   zustand=inNamen; // set enum to expect tokentagname
                    }
                     zaehler=0;
                     break;
@@ -116,31 +107,17 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
                 if (zustand==istEndTag)  return fillToken(1);
                  puffer[zaehler] = '\0';
                 if (zustand == inNamen) {
-                   // ansonsten fahre fort wie gehabt
+
+                    // save tagname, expect taginhalt and reset counter
                     zustand = erwarteTaginhalt;
-
-                    // puffer nicht einfach ausgeben
-                    // cout << endl << "Tag: " << puffer << endl;
-                    // stattdessen zwischenspeichern - ToDo
-                     strcpy(tokenTagname,puffer);
-                     cout << endl << "Tag: " << tokenTagname << " und zustand ist " << zustand <<  endl;
-
-                    /*
-                    *tokenTagname = new char[zaehler+1];
-                    strcpy(tokenTagname[anzahlTagnamen],puffer);
-                    cout << endl << "Tag: " << tokenTagname[anzahlTagnamen] << endl;
-                    anzahlTagnamen++;*/
-
-                     //cout << endl << "tokenTagname[" << anzahlTagnamen << "]: "<< tokenTagname[anzahlTagnamen] << endl;
-
-
+                    strcpy(tokenTagname,puffer);
+                    // cout << endl << "Tag: " << tokenTagname << " and zustand is " << zustand <<  endl;
                     zaehler=0;
                 }else {
                 puffer[zaehler] = '\0';
                 zaehler=0;
-                zustand=zwischenTags;
+                zustand=erwarteTaginhalt;
                 }
-
                     break;
 
                 case ' ':
@@ -149,11 +126,11 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
 
                         zustand = erwarteAttributNamen;
                         puffer[zaehler] = '\0';
-                        //cout << endl << "Tag: " << puffer << endl;
                         if (zaehler!=0) {
                             strcpy(tokenTagname,puffer);
-                            cout << endl << "Tag: " << tokenTagname << " und zustand ist " << zustand <<  endl;
+                            //cout << endl << "Tag: " << tokenTagname << " and zustand is " << zustand <<  endl;
                         }else {
+                            // we expect and endtag
                             zustand=istEndTag;
                         }
 
@@ -168,20 +145,13 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
 
                 case '=':
                     if (zustand == erwarteAttributNamen) {
-/*
-                        zustand = erwarteAttributWert;
-                        puffer[zaehler] = '\0';
-                        cout << "Name des Attributs: " << puffer << endl;
-                        zaehler=0; */
 
                         zustand = erwarteAttributWert;
                         puffer[zaehler] = '\0';
                         attName[anzahlAtt] = new char[zaehler+1];
                         strcpy(attName[anzahlAtt],puffer);
                         zaehler=0;
-                        cout << "Name des Attributs: " << attName[anzahlAtt] << endl;
-
-
+                        //cout << "Name des Attributs: " << attName[anzahlAtt] << endl;
 
                     } else if (zustand == verarbeiteAttributWert) {
 
@@ -197,21 +167,14 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
                         zustand = verarbeiteAttributWert;
                         zaehler = 0;
                     } else if (zustand == verarbeiteAttributWert) {
-                       /* zustand = erwarteAttributNamen;
-                        puffer[zaehler] = '\0';
-                        cout << "Wert des Attributs: " << puffer << endl;
-                        zaehler=0;*/
-
-
 
                     zustand = erwarteAttributNamen;
                     puffer[zaehler] = '\0';
                     attValue[anzahlAtt] = new char[zaehler+1];
                     strcpy(attValue[anzahlAtt],puffer);
                     zaehler=0;
-                    cout << "Wert des Attributs: " << attValue[anzahlAtt] << endl;
-                    anzahlAtt++; // zähle herauf, falls mehr als ein attribut existiert
-
+                    //cout << "Wert des Attributs: " << attValue[anzahlAtt] << endl;
+                    anzahlAtt++; // count up, if there is more than one attribute
 
                     } else cout << "Fehlerhaftes Zeichen! '\"'" << endl;
                     break;
@@ -220,59 +183,69 @@ int ClxmlToken::ladeXML(ifstream &xmldatei) {
                    break;
                 default:
                 if (zustand!=zwischenTags) {
-
-                    if(zeichen=='\n') {
-                     //    cout << "LINEBREAK" << " und zustand ist  "<<  zustand<< endl;
-
-                    }else {
-
-                     //  cout << zeichen <<" und zustand ist  "<<  zustand<< endl;
-                    }
-
-
+                    //cout << zeichen <<  " and the zustand is "<< zustand<<endl;
                      puffer[zaehler] = zeichen;
                      zaehler++;
                 }
-
                     break;
-            } // Ende switch
+            } // End switch
     }
-
 }
 
 
-void ClxmlToken::printXMLToken(
-int                       ebene)
+
+void ClxmlToken::printXMLToken(CltxtToken &txttoken, ofstream &fout, bool &txtprinted)
 {
-ClxmlToken *child;
+// Form XML-Code
 
-
-        //druckeTokenEbene(ebene);
-        cout << "TOKEN:            " << name() << " - " << inhalt() << endl;
-
- cout << "anzahlAtt " << anzahlAtt << endl;
-
-        if (anzahlAtt > 0)
-           {
-           for (int i=0;i<anzahlAtt;i++)
+    // open tag
+        fout << "<" << getname() ;
+             // make room for attributes
+            if (getanzahlAtt() > 0)
                {
-               //druckeTokenEbene(ebene);
-               cout << "Attribut " << attName[i] << " hat den Wert "
-                    << attValue[i] << endl;
+               for (int i=0;i<getanzahlAtt();i++)
+                   {
+                   fout << " " << getattName(i) << "=" << '"' << getattValue(i) << '"';
+                   }
                }
-           }
-
-     /*   if (child->xmltokenChild==NULL) break; // beende Schleife bei child==NULL
-            child = child->xmltokenChild; */
-
-        if (xmltokenChild!=NULL) xmltokenChild->printXMLToken(ebene+1);
-        if (xmltokenSibling!=NULL) xmltokenSibling->printXMLToken(ebene);
+                    // close tag, insert Taginhalt
+                    fout << ">" << getinhalt();
 
 
+        // print all children completely
+        if (xmltokenChild!=NULL) xmltokenChild->printXMLToken(txttoken, fout, txtprinted);
+
+        // if we are before the closing of the last child-element (product-element)
+
+        if (xmltokenSibling==NULL and xmltokenChild!=NULL ) {
+            // close the last-product element from xml
+            fout << "</" << getname() << ">" <<  endl;
+
+            // then append the TXT-elements if not already printed
+            if (txtprinted==false) {
+
+                // for every TXT-record
+                for (int i=0;i<txttoken.getAnzahlAtt();i++){
+
+                    // print out txt-data in xml-form
+                    fout << "<product xml:id=\""<<txttoken.getattValueID(i) << "\">" << endl;
+                    fout << "<type>"<< txttoken.getattValueModel(i) << "</type>" << endl;
+                    fout << "<price>"<< txttoken.getattValuePrice(i) << "</price>" << endl;
+                    fout << "</product>" << endl;
+
+                }
+                txtprinted=true; // txt sucessfully printed
+            }
+
+        } else {
+              // if its not the last child-element close the tag without printing txt
+          fout << "</" << getname() << ">" <<  endl;
+        }
+
+         // after that print sibling elements if existing
+        if (xmltokenSibling!=NULL) xmltokenSibling->printXMLToken(txttoken, fout, txtprinted);
 
 }
-
-
 
 void ClxmlToken::cleanToken(void)
 {
@@ -292,8 +265,7 @@ if (tokenTaginhalt!=NULL)
 int ClxmlToken::fillToken(
 int                    mode)
 {
-    // wir brauchen fillToken um die Print-Methode nicht zu blockieren, wegen leeren strings
-
+// we need fillToken to unblock the print-methode, that complains if it gets to print an empty string
 if (*tokenTagname=='\0')
    strcpy(tokenTagname,"Unbekanntes Element");
 if (tokenTaginhalt==NULL)
@@ -304,4 +276,3 @@ if (tokenTaginhalt==NULL)
 
 return mode;
 }
-

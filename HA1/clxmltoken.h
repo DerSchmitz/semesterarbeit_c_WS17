@@ -2,25 +2,30 @@
 #include <fstream>
 #include <string.h>
 #include <stdlib.h>
+#include "cltxttoken.h"
+
 using namespace std;
 
 class ClxmlToken{
     public:
+    // funktion for initialisation of ClxmlToken-objects
     ClxmlToken();
+
+    // parsing-methode for xml-file
     int ladeXML(ifstream &xmldatei);
-   // char *getTagname() { return "sss"; }
 
-
-    void printXMLToken(int ebene);
-
+    // print-methode to print out XML-data AND TXT-data in one XML-document
+    void printXMLToken(CltxtToken &txttoken, ofstream &fout, bool &txtprinted);
 
     // GETTER
-    char *name() { return tokenTagname; }
-    char *inhalt() { return tokenTaginhalt; }
-  //  char *attName(int id) { return attName[id]; }
-  //  char *attValue(int id) { return attValue[id]; }
+    char *getname() { return tokenTagname; }
+    char *getinhalt() { return tokenTaginhalt; }
+    char *getattName(int id) { return attName[id]; }
+    char *getattValue(int id) { return attValue[id]; }
+    int getanzahlAtt(void) { return anzahlAtt; }
 
     private:
+    // variables to save XML-Data
     int anzahlTagnamen;
     char tokenTagname[100];
     char *tokenTaginhalt;
@@ -28,11 +33,19 @@ class ClxmlToken{
     char *attName[10];
     char *attValue[10];
 
-    // erschaffe eigenes Objekt für Kindelemente - stellt Beziehung zwischen product und model/descr/price her
+    // pointer to child-object - we use this to connect the father elements (e.g. product) to child elements (e.g. type/model/descr/price)
     ClxmlToken *xmltokenChild;
-    // erschaffe eigenes Objekt für Geschwisterlemente - stellt Beziehung zu dem nächstgelegenen Geschwisterelement her
+    // pointer to sibling-object - we use this to connect data from elements that are next to each other
     ClxmlToken *xmltokenSibling;
 
+    // we clean objects after creation to make sure they are not filled yet
     void cleanToken();
+
+    // we fill Objects to avoid bugs with printing
     int fillToken(int mode);
 };
+
+
+
+
+

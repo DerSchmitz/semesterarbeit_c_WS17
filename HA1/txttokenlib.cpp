@@ -4,36 +4,34 @@
 #include <stdlib.h>
 using namespace std;
 #include "clxmltoken.h"
-#include "cltxttoken.h"
-
 
 void CltxtToken::ladeTXT(ifstream &txtdatei) {
 
-    cout << endl << "Hallo, ich bin die ladeTXT-Methode" << endl;
+    //cout << endl << "Hallo, ich bin die ladeTXT-Methode" << endl;
 
     char zeichen;
     char puffer[100];
     int counter;
     enum zustandsmeldung {
-        nachID, nachZweitemSpace,zwischendenZeilen    };
+        nachID, nachZweitemSpace , zwischendenZeilen    };
 
     zustandsmeldung zustandsmeldung;
     //reset enum
     zustandsmeldung = zwischendenZeilen;
 
     cout << endl << endl;
-    cout << "Parsing der TXT Datei (products.txt)" << endl;
+    cout << "Parsing of the TXT-file" << endl;
     cout << "------------------------------"<< endl;
     for (counter=0, zustandsmeldung=zwischendenZeilen, anzahlAtt=0;;){
     txtdatei.get(zeichen);
-    if (txtdatei.eof()) return; // ERGÄNZE ANDERE OBJEKTE.EOF !!!!
+    if (txtdatei.eof()) return; // andere objekte abprüfen?
 
 
         switch(zeichen){
 
         case ' ':
-            // was passiert bei space
-            // wir bearbeiten gerade eine xml:id
+            // what happens if we read space?
+            // we are currently reading a xml:id
         if (zustandsmeldung==zwischendenZeilen){
 
             puffer[counter] = '\0';
@@ -41,40 +39,40 @@ void CltxtToken::ladeTXT(ifstream &txtdatei) {
             strcpy(attValueID[anzahlAtt],puffer);
             counter=0;
 
+            // set enum to signify that we already read ID
             zustandsmeldung=nachID;
         }
         else if (zustandsmeldung==nachID)  {
+
                 puffer[counter] = '\0';
                 attValueModel[anzahlAtt] = new char[counter+1];
                 strcpy(attValueModel[anzahlAtt],puffer);
                 counter=0;
-
+            // set enum to signify that we already read the type-information
             zustandsmeldung=nachZweitemSpace;
         }
         else  {
-           // fülle das array mit den datenwerten auf und zähle einen weiter
+           // fill the array with the datavalues and slowly count up
            puffer[counter]=zeichen;
            counter++;
         }
         break;
 
         case '\n':
-        // ich erreiche das ende einerZeile - der nächste Punkt dient also wieder der Abgrenzung zwischen Attributwerten
-
-        // PREIS AUSLESEN
+        // we come to the end of a line - we can read the priceValue
         puffer[counter] = '\0';
         attValuePrice[anzahlAtt] = new char[counter+1];
         strcpy(attValuePrice[anzahlAtt],puffer);
         counter=0;
-        //Wichtig!!! Zähle attribut aanschließnd langsam herauf - ABER NUR EINMAL PRO WIEDERHOLENDE LINE
+        //Important!!! We count the attribute-amount slowly up - ONLY ONE TIME FOR EVERY LINE (and therefore every seperate product)
         anzahlAtt++;
 
-        // reset zustand
+        // reset enum
         zustandsmeldung=zwischendenZeilen;
         break;
 
         default:
-        // was passiert normalerweise: fülle das array mit den datenwerten auf und zähle einen weiter
+        // what happens on default?: fill the array with the datavalues and slowly count up
         puffer[counter]=zeichen;
         counter++;
         break;

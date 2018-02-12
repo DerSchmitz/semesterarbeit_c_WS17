@@ -12,17 +12,21 @@ class CltxtToken{
     char *attValueModel[100];
     char *attValuePrice[100];
 
-
-
     public:
     void ladeTXT(ifstream &txtdatei);
 
-    // getter-methode holt attributwwerte je nach ID (Auslese-Iteration)
-                    // counter wird in variable id gespeichert und dann innerhaalb der funktion weiterinterpretiert
+    // getter-methodes gets attribute-values depending on ID (Reading-Iteration)
+                    // anzahlAtt-counter is saved in parameter "id" and then delivered to the get-methode as a parameter
     char *getattValueID(int id) {return attValueID[id];}
     char *getattValueModel(int id) {return attValueModel[id];}
     char *getattValuePrice(int id) {return attValuePrice[id];}
-    // get Anzahl variable
+    // get AnzahlAtt variable
     int  getAnzahlAtt() {return anzahlAtt;}
 
+
+
+
+
+
 };
+
