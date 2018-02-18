@@ -19,7 +19,7 @@ int main()
 
     //set variables for while-loop and cli
     int active = 0;
-    // set cariables for cin-userinputs
+    // set variables for cin-userinputs
     char userinput;
     char txtfilename[50];
     char xmlfilename[50];

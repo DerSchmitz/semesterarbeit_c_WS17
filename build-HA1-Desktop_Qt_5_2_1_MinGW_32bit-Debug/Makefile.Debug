@@ -116,8 +116,7 @@ debug/main.o: ../HA1/main.cpp ../HA1/clxmltoken.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\HA1\main.cpp
 
 debug/xmltokenlib.o: ../HA1/xmltokenlib.cpp ../HA1/clxmltoken.h \
-		../HA1/cltxttoken.h \
-		../HA1/print-check.h
+		../HA1/cltxttoken.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\xmltokenlib.o ..\HA1\xmltokenlib.cpp
 
 debug/txttokenlib.o: ../HA1/txttokenlib.cpp ../HA1/clxmltoken.h \

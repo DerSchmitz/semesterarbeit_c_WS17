@@ -4,7 +4,6 @@
 #include <stdlib.h>
 using namespace std;
 #include "clxmltoken.h"
-#include "print-check.h"
 
 // definiere Regeln für das Erschaffen eines neuen Objekts der Klasse ClxmlToken
 ClxmlToken::ClxmlToken()
