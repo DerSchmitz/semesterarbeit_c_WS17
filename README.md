@@ -3,47 +3,41 @@ C++ Semesterarbeit - Jürgen Schmitz - Stand 18.2.2018
 
 Programme Documentation:        
 C++-Files:        
-main.cpp: This file includes the cin and cout commands of the CLI as well as the launch-commands for the methods defined in txttokenlib.cpp and xmltokenlib.cpp.
+1. main.cpp: This file includes the cin and cout commands of the CLI as well as the launch-commands for the methods defined in txttokenlib.cpp and xmltokenlib.cpp.
 
 
-txttokenlib.cpp: Here we find the parsing method for the txt-file, that saves the metadata of one product inside of a set of variables for each of the iterations of “anzahlAtt”. 
+2. txttokenlib.cpp: Here we find the parsing method for the txt-file, that saves the metadata of one product inside of a set of variables for each of the iterations of “anzahlAtt”. 
 
 
-xmltokenlib.cpp: Here are the parsing methods for the xml-file defined, as well as the printing method needed to print out the stored XML- and TXT-data
+3. xmltokenlib.cpp: Here are the parsing methods for the xml-file defined, as well as the printing method, that is needed to print out the stored XML- and TXT-data
 
 
 Header-Files:
-clxmltoken.h: Here you find the class-definition of the class designated for the XML-data, including all variables and functions that work with xml-data
+1. clxmltoken.h: Here you find the class-definition of the class designated for the XML-data, including all variables and functions that work with xml-data
 
 
-cltxttoken.h: Here you find the class-definition of the class designated for the TXT-Data, including all txt-variables and a set of getter-methods, that enable the printing-method in xmltokenlib.cpp to also print out the txt-data
+2. cltxttoken.h: Here you find the class-definition of the class designated for the TXT-Data, including all txt-variables and a set of getter-methods, that enable the printing-method in xmltokenlib.cpp to also print out the txt-data
 
 
 Datasources:
-listProducts.xml: A list of products in XML-format 
-products.txt: A list of additional products in TXT-format
-allowed-tags.dtd: A DTD-File that defines allowed tags for stage 4 of this assignment
+1. listProducts.xml: A list of products in XML-format 
+2. metainformation.txt: A list of meta-data with an ID matching one of the IDs of the products in XML-Format.
+3. allowed-tags.dtd: A DTD-File that defines allowed tags for stage 4 of this assignment
 
 
 Repository Permalink: https://github.com/DerSchmitz/semesterarbeit_c_WS17 
 
 
-Der Business Case: Ein Elektronikfachhandel erstellt für die Inventur einen XML-Datensatz mit allen Produkten und dazu gehörigen Produktbeschreibungen. Eine damit verbundene Dtd-Datei filtert veraltete oder nicht benötigte Metadaten heraus. 
-Ein kürzlich assoziierter Franchisenehmer arbeitet mit einer veralteten Inventursoftware, die nur minimalistische Datensätze im txt-Format ausgibt, deren Datenwerte keine Leerstellen enthalten können. Die Datenexports dieser beiden Softwares müssen für die Inventur vereint werden.
+Der Business Case: Ein Elektronikfachhandel versucht sein Lager umzustrukturieren und muss daher die im txt-Format vorliegenden, stock-Informationen über Lagerbestand und Lagerort dem richtigen Produkt zuordnen.
 
 
-Ziel des Programms: Die XML-Datei und die Txt-Datei in ein XML-Dokument konvertieren.
+Ziel des Programms: Die XML-Datei und die Txt-Datei in ein XML-Dokument konvertieren und dabei die IDs abfragen, um die Lagerstätten dem richtigen Produkt zuzuordnen.
 
 
 Verwendete Hilfestellungen: 
 Hilfestellung zum Bau des XML-Parsers: https://gist.github.com/janwieners/a246cf84803bb7f2f2dd 
 Hilfestellung zur Datenverarbeitung der Metadaten:
 http://hki.uni-koeln.de/beispiel-10-rekursion-und-verknuepfte-listen-ii/ 
-
-
-
-
-
 
 
 
@@ -66,4 +60,5 @@ Vorgehensweise:
 1. Implementierung der Printfunktion:
    1. Erzeuge ein fout-objekt zur Erzeugung einer Dateiausgabe
    2. Iteriere alle Child- und Siblingobjekte der XML-Datei durch und drucke die gespeicherten Daten jeweils im XML-Format ab
-   3. Starte Abfrage, wann das letzte Vaterelement geschlossen wird und drucke vor dem Schließen die Produkte aus der TXT-Datei im XML-Format ab
+   3. Iteriere die XML-IDs und die Txt-Ids und gleiche jeweils den string ab
+   4. Bei Übereinstimmung drucke TXT-Datenwerte in XML-Format aus.
