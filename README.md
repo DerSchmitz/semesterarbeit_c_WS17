@@ -3,20 +3,20 @@ C++ Semesterarbeit - Jürgen Schmitz - Stand 18.2.2018
 
 Programme Documentation:        
 C++-Files:        
-main.cpp: This file includes the cin and cout commands of the CLI as well as the launch-commands for the methods defined in txttokenlib.cpp and xmltokenlib.cpp.
+1. main.cpp: This file includes the cin and cout commands of the CLI as well as the launch-commands for the methods defined in txttokenlib.cpp and xmltokenlib.cpp.
 
 
-txttokenlib.cpp: Here we find the parsing method for the txt-file, that saves the metadata of one product inside of a set of variables for each of the iterations of “anzahlAtt”. 
+2. txttokenlib.cpp: Here we find the parsing method for the txt-file, that saves the metadata of one product inside of a set of variables for each of the iterations of “anzahlAtt”. 
 
 
-xmltokenlib.cpp: Here are the parsing methods for the xml-file defined, as well as the printing method needed to print out the stored XML- and TXT-data
+3. xmltokenlib.cpp: Here are the parsing methods for the xml-file defined, as well as the printing method needed to print out the stored XML- and TXT-data
 
 
 Header-Files:
-clxmltoken.h: Here you find the class-definition of the class designated for the XML-data, including all variables and functions that work with xml-data
+1. clxmltoken.h: Here you find the class-definition of the class designated for the XML-data, including all variables and functions that work with xml-data
 
 
-cltxttoken.h: Here you find the class-definition of the class designated for the TXT-Data, including all txt-variables and a set of getter-methods, that enable the printing-method in xmltokenlib.cpp to also print out the txt-data
+2. cltxttoken.h: Here you find the class-definition of the class designated for the TXT-Data, including all txt-variables and a set of getter-methods, that enable the printing-method in xmltokenlib.cpp to also print out the txt-data
 
 
 Datasources:
@@ -44,9 +44,6 @@ http://hki.uni-koeln.de/beispiel-10-rekursion-und-verknuepfte-listen-ii/
 
 
 
-
-
-
 Vorgehensweise: 
 1. Dateiverarbeitung TXT
    1. Öffne das txt-objekt
@@ -56,14 +53,14 @@ Vorgehensweise:
    5. erstelle Getter für alle Variablen, um die TXT-Werte von der Print-Methode aus aufzurufen
 
 
-1. Dateiverarbeitung XML
+2. Dateiverarbeitung XML
    1. Öffne das xml-objekt 
    2. parse die datensätze
    3. speichere einzelne Daten und Metadaten in Variablen der Klasse Clxmltoken 
    4. erzeuge rekursiv neue Chid- und Siblingobjekte, um die Datensätze voneinander zu unterscheiden
 
 
-1. Implementierung der Printfunktion:
+3. Implementierung der Printfunktion:
    1. Erzeuge ein fout-objekt zur Erzeugung einer Dateiausgabe
    2. Iteriere alle Child- und Siblingobjekte der XML-Datei durch und drucke die gespeicherten Daten jeweils im XML-Format ab
    3. Starte Abfrage, wann das letzte Vaterelement geschlossen wird und drucke vor dem Schließen die Produkte aus der TXT-Datei im XML-Format ab
