@@ -20,9 +20,9 @@ Header-Files:
 
 
 Datasources:
-listProducts.xml: A list of products in XML-format 
-products.txt: A list of additional products in TXT-format
-allowed-tags.dtd: A DTD-File that defines allowed tags for stage 4 of this assignment
+1. listProducts.xml: A list of products in XML-format 
+2. products.txt: A list of additional products in TXT-format
+3. allowed-tags.dtd: A DTD-File that defines allowed tags for stage 4 of this assignment
 
 
 Repository Permalink: https://github.com/DerSchmitz/semesterarbeit_c_WS17 
